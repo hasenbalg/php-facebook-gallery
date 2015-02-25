@@ -1,0 +1,30 @@
+<?php
+function facebook_gallery($gallery_id)
+{
+	$output = '';
+	$url = 'https://graph.facebook.com/' . $gallery_id . '/photos';
+  $data = json_decode(file_get_contents($url), TRUE);
+    
+	foreach ($data['data'] as $key => $value) {
+		if (isset($data['data'][$key]['name'])) {//sometimes not there
+			$name = $data['data'][$key]['name'];
+		}else{
+			$name = '<br />';
+		}
+		$output .= '
+					<a href="' . $data['data'][$key]['link'] . '" target="blank">
+						<img src="' . $data['data'][$key]['images'][2]['source'] . '"  alt="' . $name . '">
+					</a>
+					<a href="' . $data['data'][$key]['link'] . '" target="blank">
+							<p>' . $name . '</p>
+					</a>
+				';	
+	}
+	echo $output;
+}
+	
+?>
+
+<?php
+  facebook_gallery(147778891922891);
+?>
